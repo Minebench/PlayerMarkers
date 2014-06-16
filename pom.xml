@@ -17,6 +17,19 @@
         <url>https://github.com/Braste/PlayerMarkers</url>
     </scm>
 
+    <distributionManagement>
+        <repository>
+            <id>deployment</id>
+            <name>repo.crm-braun.de Releases</name>
+            <url>http://repo.crm-braun.de/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshot</id>
+            <name>repo.crm-braun.de Snapshots</name>
+            <url>http://repo.crm-braun.de/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 	<!-- Repositories -->
     <repositories>
         <repository>
