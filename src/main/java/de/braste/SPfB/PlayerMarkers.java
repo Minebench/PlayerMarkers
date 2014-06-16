@@ -276,13 +276,15 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
         }
 
         public void run() {
-            if (jsonData != null) {
+            if (jsonData != null && targetPath != null) {
                 try {
-                    PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(targetPath)));
+                    FileWriter fileWriter = new FileWriter(targetPath);
+                    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                    PrintWriter writer = new PrintWriter(bufferedWriter);
                     writer.print(jsonData);
                     writer.close();
                 } catch (java.io.IOException e) {
-                    Logger.getLogger(getDescription().getName()).log(Level.SEVERE, "Unable to write to " + targetPath + ": " + e.getMessage());
+                    getLogger().log(Level.SEVERE, "Unable to write to " + targetPath + ": " + e.getMessage());
                 } finally {
                     jsonData = null;
                 }
