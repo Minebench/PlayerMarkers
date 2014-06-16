@@ -11,6 +11,7 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -86,17 +87,15 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
 
     public void onDisable() {
         // Disable updates
-        getServer().getScheduler().cancelTask(mUpdateTaskId);
+        BukkitScheduler schedule = getServer().getScheduler();
+        schedule.cancelTasks(getServer().getPluginManager().getPlugin("PlayerMarkers"));
 
         if (mSaveOfflinePlayers) {
             // Save the offline players map
             saveOfflinePlayersMap();
         }
-
-        // Update data one last time
-        this.run();
-
-        Logger.getLogger(mPdfFile.getName()).log(Level.INFO, mPdfFile.getName() + " disabled");
+        PluginDescriptionFile pdfFile = this.getDescription();
+        getServer().getLogger().info(pdfFile.getName() + " version " + pdfFile.getVersion() + " disabled");
     }
 
     @EventHandler
