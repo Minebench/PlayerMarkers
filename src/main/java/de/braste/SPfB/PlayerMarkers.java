@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
     private static final String MappingSectionName = "Mapping";
 
-    private int mUpdateTaskId = 0;
     private JSONDataWriter mDataWriter = null;
     private PluginDescriptionFile mPdfFile;
     private File mOfflineLocationsFile = null;
@@ -74,7 +73,7 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
         mDataWriter = new JSONDataWriter(targetFile);
 
         // Register update task
-        mUpdateTaskId = getServer().getScheduler().scheduleSyncRepeatingTask(this, this, updateInterval, updateInterval);
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, this, updateInterval, updateInterval);
 
         if (mSaveOfflinePlayers) {
             // Register our event handlers
