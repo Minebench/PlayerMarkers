@@ -1,7 +1,7 @@
 name: PlayerMarkers
-version: 0.2.0
+version: 0.3.0
 decsription: Generates Markers on an Overviewer generated map
-author: 1am3r
-website: http://1am3r.github.com/PlayerMarkers/
+author: 1am3r, revised by braste
+website: http://braste.github.com/PlayerMarkers/
 dev-url: http://dev.bukkit.org/server-mods/mapmarkers/
-main: com.github._1am3r.PlayerMarkers.PlayerMarkers
+main: de.braste.PlayerMarkers

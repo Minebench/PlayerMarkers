@@ -1,23 +1,5 @@
-package com.github._1am3r.PlayerMarkers;
+package de.braste.SPfB;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -31,6 +13,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.io.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
 	private static final String MappingSectionName = "Mapping";
 
@@ -38,13 +28,18 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
 	private JSONDataWriter mDataWriter = null;
 	private PluginDescriptionFile mPdfFile;
 	private File mOfflineLocationsFile = null;
-	private Map<String, String> mMapNameMapping = new HashMap<String, String>();
-	private ConcurrentHashMap<String, SimpleLocation> mOfflineLocations = new ConcurrentHashMap<String, SimpleLocation>();
+	private Map<String, String> mMapNameMapping;
+	private ConcurrentHashMap<String, SimpleLocation> mOfflineLocations;
 	private boolean mSaveOfflinePlayers = true;
 	private boolean mHideVanishedPlayers = true;
 	private boolean disabled = false;
-	
-	public void onEnable() {
+
+    public PlayerMarkers() {
+        mMapNameMapping = new HashMap<>();
+        mOfflineLocations = new ConcurrentHashMap<>();
+    }
+
+    public void onEnable() {
 		mPdfFile = this.getDescription();
 		mSaveOfflinePlayers = getConfig().getBoolean("saveOfflinePlayers");
 		mHideVanishedPlayers = getConfig().getBoolean("hideVanishedPlayers");
@@ -172,26 +167,6 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
 		}
 	}
 
-	public static class SimpleLocation implements Serializable {
-		private static final long serialVersionUID = -1249619403579340650L;
-		public String worldName;
-		public int x, y, z;
-
-		public SimpleLocation(String world, int xLocation, int yLocation, int zLocation) {
-			worldName = world;
-			x = xLocation;
-			y = yLocation;
-			z = zLocation;
-		}
-
-		public SimpleLocation(Location loc) {
-			worldName = loc.getWorld().getName();
-			x = loc.getBlockX();
-			y = loc.getBlockY();
-			z = loc.getBlockZ();
-		}
-	}
-
 	@SuppressWarnings("unchecked")
 	public void run() {
 		JSONArray jsonList = new JSONArray();
@@ -241,7 +216,8 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
 		if (!this.disabled)
 		{
 			getServer().getScheduler().runTaskAsynchronously(this, mDataWriter);
-		}else
+		}
+        else
 		{
 			mDataWriter.run();
 		}
@@ -256,12 +232,10 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
 		}
 
 		public void setData(JSONArray data) {
-			if (jsonData != null) {
-				return;
-			} else {
+            if (jsonData == null) {
 				jsonData = (JSONArray) data.clone();
 			}
-		}
+        }
 
 		public void run() {
 			if (jsonData != null) {
