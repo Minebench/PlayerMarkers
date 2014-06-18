@@ -8,13 +8,6 @@ public class SimpleLocation implements Serializable {
     public String worldName;
     public int x, y, z;
 
-    public SimpleLocation(String world, int xLocation, int yLocation, int zLocation) {
-        worldName = world;
-        x = xLocation;
-        y = yLocation;
-        z = zLocation;
-    }
-
     public SimpleLocation(Location loc) {
         worldName = loc.getWorld().getName();
         x = loc.getBlockX();
