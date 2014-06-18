@@ -8,7 +8,7 @@
         <api.version>unknown</api.version>
         <minecraft.version>1.7.9</minecraft.version>
         <bukkit_version>1.7.9-R0.2</bukkit_version>
-        <minecraft_version>1_6_R3</minecraft_version>
+        <minecraft_version>1_7_R3</minecraft_version>
     </properties>
 
     <scm>
