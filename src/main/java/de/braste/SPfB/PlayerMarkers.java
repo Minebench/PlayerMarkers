@@ -187,6 +187,9 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
             out.put("x", p.getLocation().getBlockX());
             out.put("y", p.getLocation().getBlockY());
             out.put("z", p.getLocation().getBlockZ());
+            out.put("health", p.getHealth());
+            out.put("foodlevel", p.getFoodLevel());
+            out.put("level", p.getLevel());
 
             // Handles sneaking player
             if (mHideSneakingPlayers) {
