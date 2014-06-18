@@ -1,5 +1,5 @@
 name: PlayerMarkers
-version: 0.3.0 (CraftBukkit 1.7.9-R0.2)
+version: 0.3.1-SNAPSHOT (CraftBukkit 1.7.9-R0.2)
 decsription: Generates Markers on an Overviewer generated map
 author: 1am3r, revised by braste
 website: http://braste.github.com/PlayerMarkers/
