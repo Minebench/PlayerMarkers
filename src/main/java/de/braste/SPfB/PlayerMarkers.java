@@ -16,6 +16,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.*;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -174,7 +175,7 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
         JSONObject out;
 
         // Write Online players
-        Player[] players = getServer().getOnlinePlayers();
+        Collection<? extends Player> players = getServer().getOnlinePlayers();
         for (Player p : players) {
             boolean sendDataVanished = true;
             boolean sendDataSneaking = true;
