@@ -5,3 +5,4 @@ author: 1am3r, revised by braste
 website: http://braste.github.com/PlayerMarkers/
 dev-url: http://dev.bukkit.org/server-mods/mapmarkers/
 main: de.braste.SPfB.PlayerMarkers
+softdepend: [VanishNoPacket]

@@ -14,8 +14,17 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.kitteh.vanish.VanishPlugin;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -28,8 +37,8 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
     private JSONDataWriter mDataWriter = null;
     private PluginDescriptionFile mPdfFile;
     private File mOfflineLocationsFile = null;
-    private Map<String, String> mMapNameMapping;
-    private ConcurrentHashMap<String, SimpleLocation> mOfflineLocations;
+    private Map<String, String> mMapNameMapping = new HashMap<>();
+    private ConcurrentHashMap<String, SimpleLocation> mOfflineLocations = new ConcurrentHashMap<>();;
     private boolean mSaveOfflinePlayers = true;
     private boolean mHideVanishedPlayers = true;
     private boolean mHideSneakingPlayers = true;
@@ -38,10 +47,7 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
     private boolean mSendJSONOnSneakingPlayers = false;
     private boolean mSendJSONOnInvisiblePlayers = false;
 
-    public PlayerMarkers() {
-        mMapNameMapping = new HashMap<>();
-        mOfflineLocations = new ConcurrentHashMap<>();
-    }
+    private VanishPlugin vnp = null;
 
     public void onEnable() {
         mPdfFile = this.getDescription();
@@ -52,6 +58,10 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
         mSendJSONOnVanishedPlayers = getConfig().getBoolean("sendJSONOnVanishedPlayers");
         mSendJSONOnSneakingPlayers = getConfig().getBoolean("sendJSONOnSneakingPlayers");
         mSendJSONOnInvisiblePlayers = getConfig().getBoolean("sendJSONOnInvisiblePlayers");
+
+        if (getServer().getPluginManager().isPluginEnabled("VanishNoPacket")) {
+            vnp = (VanishPlugin) getServer().getPluginManager().getPlugin("VanishNoPacket");
+        }
 
         // Initialize the mapping bukkit to overviewer map names
         initMapNameMapping();
@@ -220,17 +230,19 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
 
             // Handles vanished player
             if (mHideVanishedPlayers) {
-                List<MetadataValue> list = p.getMetadata("vanished");
-                for (MetadataValue value : list) {
-                    if (value.asBoolean()) {
-                        if (mSendJSONOnVanishedPlayers) {
-                            out.put("id", 5); // will replace invisible player ID
+                sendDataVanished = vnp == null || !vnp.getManager().isVanished(p);
+                if (sendDataVanished) {
+                    List<MetadataValue> list = p.getMetadata("vanished");
+                    for (MetadataValue value : list) {
+                        if (value.asBoolean()) {
+                            sendDataVanished = false;
+
+                            break;
                         }
-
-                        sendDataVanished = false;
-
-                        break;
                     }
+                }
+                if (sendDataVanished && mSendJSONOnVanishedPlayers) {
+                    out.put("id", 5); // will replace invisible player ID
                 }
             }
 

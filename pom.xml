@@ -24,6 +24,10 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <id>minebench-repo</id>
+            <url>http://repo.minebench.de/content/groups/public/</url>
+        </repository>
     </repositories>
 
 	<!-- Dependencies -->
@@ -33,6 +37,11 @@
             <artifactId>spigot-api</artifactId>
             <version>${spigot_version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.kitteh</groupId>
+            <artifactId>VanishNoPacket</artifactId>
+            <version>3.20</version>
         </dependency>
 	</dependencies>
 
