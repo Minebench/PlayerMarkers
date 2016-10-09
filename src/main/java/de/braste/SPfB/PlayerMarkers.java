@@ -246,7 +246,7 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
                 }
             }
 
-            if (sendDataSneaking || sendDataInvisible || sendDataVanished) {
+            if (sendDataSneaking && sendDataInvisible && sendDataVanished) {
                 jsonList.add(out);
             }
         }
