@@ -247,7 +247,7 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
                         }
                     }
                 }
-                if (sendDataVanished && mSendJSONOnVanishedPlayers) {
+                if (!sendDataVanished && mSendJSONOnVanishedPlayers) {
                     out.put("id", 5); // will replace invisible player ID
                 }
             }
