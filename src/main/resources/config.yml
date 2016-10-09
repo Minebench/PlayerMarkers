@@ -4,7 +4,9 @@ saveOfflinePlayers: true
 hideVanishedPlayers: true
 hideSneakingPlayers: true
 hideInvisiblePlayers: true
+hideSpectators: true
 sendJSONOnVanishedPlayers: false
 sendJSONOnSneakingPlayers: false
 sendJSONOnInvisiblePlayers: false
+sendJSONOnSpectators: false
 offlineFile: locations.bin

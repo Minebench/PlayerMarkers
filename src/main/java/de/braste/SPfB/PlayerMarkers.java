@@ -1,5 +1,6 @@
 package de.braste.SPfB;
 
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -43,9 +44,11 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
     private boolean mHideVanishedPlayers = true;
     private boolean mHideSneakingPlayers = true;
     private boolean mHideInvisiblePlayers = true;
+    private boolean mHideSpectators = true;
     private boolean mSendJSONOnVanishedPlayers = false;
     private boolean mSendJSONOnSneakingPlayers = false;
     private boolean mSendJSONOnInvisiblePlayers = false;
+    private boolean mSendJSONOnSpectators = false;
 
     private VanishPlugin vnp = null;
 
@@ -55,9 +58,11 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
         mHideVanishedPlayers = getConfig().getBoolean("hideVanishedPlayers");
         mHideSneakingPlayers = getConfig().getBoolean("hideSneakingPlayers");
         mHideInvisiblePlayers = getConfig().getBoolean("hideInvisiblePlayers");
+        mHideSpectators = getConfig().getBoolean("hideSpectators");
         mSendJSONOnVanishedPlayers = getConfig().getBoolean("sendJSONOnVanishedPlayers");
         mSendJSONOnSneakingPlayers = getConfig().getBoolean("sendJSONOnSneakingPlayers");
         mSendJSONOnInvisiblePlayers = getConfig().getBoolean("sendJSONOnInvisiblePlayers");
+        mSendJSONOnSpectators = getConfig().getBoolean("sendJSONOnSpectators");
 
         if (getServer().getPluginManager().isPluginEnabled("VanishNoPacket")) {
             vnp = (VanishPlugin) getServer().getPluginManager().getPlugin("VanishNoPacket");
@@ -190,6 +195,7 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
             boolean sendDataVanished = true;
             boolean sendDataSneaking = true;
             boolean sendDataInvisible = true;
+            boolean sendDataSpectator = true;
 
             out = new JSONObject();
             out.put("msg", p.getName());
@@ -246,7 +252,15 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
                 }
             }
 
-            if (sendDataSneaking && sendDataInvisible && sendDataVanished) {
+            // Handles players in spectator mode
+            if (mHideSpectators && p.getGameMode() == GameMode.SPECTATOR) {
+                sendDataSpectator = false;
+                if (mSendJSONOnSpectators) {
+                    out.put("id", 8); // will replace spectator ID
+                }
+            }
+
+            if (sendDataSneaking && sendDataInvisible && sendDataVanished && sendDataSpectator) {
                 jsonList.add(out);
             }
         }
