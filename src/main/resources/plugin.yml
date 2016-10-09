@@ -1,5 +1,5 @@
 name: PlayerMarkers
-version: 0.3.2 (Spigot 1.8.8)
+version: '${minecraft.plugin.version}'
 decsription: Generates Markers on an Overviewer generated map
 author: 1am3r, revised by braste
 website: http://braste.github.com/PlayerMarkers/

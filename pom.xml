@@ -6,15 +6,16 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <api.version>unknown</api.version>
-        <minecraft.version>1.8.8</minecraft.version>
-        <spigot_version>1.8.8-R0.1-SNAPSHOT</spigot_version>
-        <minecraft_version>1_8_R3</minecraft_version>
+        <minecraft.version>1.10.2</minecraft.version>
+        <spigot_version>1.10.2-R0.1-SNAPSHOT</spigot_version>
+        <minecraft_version>1_10_R1</minecraft_version>
+        <minecraft.plugin.version>${project.version} ${buildDescription}</minecraft.plugin.version>
     </properties>
 
     <scm>
-        <connection>scm:git:git://github.com/Braste/PlayerMarkers.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/Braste/PlayerMarkers.git</developerConnection>
-        <url>https://github.com/Braste/PlayerMarkers</url>
+        <connection>scm:git:git://github.com/Minebench/PlayerMarkers.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/Minebench/PlayerMarkers.git</developerConnection>
+        <url>https://github.com/Minebench/PlayerMarkers</url>
     </scm>
 
 	<!-- Repositories -->
@@ -22,24 +23,6 @@
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>braste-repo</id>
-            <url>http://repo.crm-braun.de/content/groups/public/</url>
-        </repository>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>deployment</id>
-            <name>libs-release</name>
-            <url>http://repo.crm-braun.de/artifactory/libs-release</url>
-        </repository>
-        <repository>
-            <snapshots />
-            <id>snapshots</id>
-            <name>libs-snapshot</name>
-            <url>http://repo.crm-braun.de/artifactory/libs-snapshot</url>
         </repository>
     </repositories>
 
@@ -52,52 +35,50 @@
             <scope>provided</scope>
         </dependency>
 	</dependencies>
-	
+
+    <profiles>
+        <profile>
+            <id>static_build_number</id>
+            <activation>
+                <property>
+                    <name>!env.BUILD_NUMBER</name>
+                </property>
+            </activation>
+            <properties>
+                <buildNumber>0</buildNumber>
+                <buildDescription>(manually compiled)</buildDescription>
+            </properties>
+        </profile>
+        <profile>
+            <id>dynamic_build_number</id>
+            <activation>
+                <property>
+                    <name>env.BUILD_NUMBER</name>
+                </property>
+            </activation>
+            <properties>
+                <buildNumber>${env.BUILD_NUMBER}</buildNumber>
+                <buildDescription>(build #${env.BUILD_NUMBER})</buildDescription>
+            </properties>
+        </profile>
+    </profiles>
+
 	<build>
-        <defaultGoal>clean install</defaultGoal>
-        <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
+        <finalName>${project.name}</finalName>
         <resources>
             <resource>
-                <targetPath>.</targetPath>
                 <filtering>true</filtering>
                 <directory>${basedir}/src/main/resources/</directory>
-                <includes>
-                    <include>plugin.yml</include>
-                    <include>config.yml</include>
-                </includes>
             </resource>
         </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.3.1</version>
-                <configuration>
-                    <archive>
-                        <addMavenDescriptor>true</addMavenDescriptor>
-                        <manifestEntries>
-                            <Main-Class>de.braste.SPfB.SPfB</Main-Class>
-                            <Implementation-Title>SPfB</Implementation-Title>
-                            <Implementation-Version>${project.version}</Implementation-Version>
-                            <Implementation-Vendor>Braste</Implementation-Vendor>
-                            <Specification-Title>Spigot</Specification-Title>
-                            <Specification-Version>${spigot_version}</Specification-Version>
-                            <Specification-Vendor>Spigot Team</Specification-Vendor>
-                            <Sealed>true</Sealed>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>3.5.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <showDeprecation>true</showDeprecation>
-                    <showWarnings>true</showWarnings>
-                    <fork>true</fork>
                 </configuration>
             </plugin>
         </plugins>
