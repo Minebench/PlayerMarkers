@@ -49,6 +49,9 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
     private boolean mSendJSONOnSneakingPlayers = false;
     private boolean mSendJSONOnInvisiblePlayers = false;
     private boolean mSendJSONOnSpectators = false;
+    private boolean mSendHealthInfo = true;
+    private boolean mSendFoodLevel = true;
+    private boolean mSendLevel = true;
 
     private VanishPlugin vnp = null;
 
@@ -63,6 +66,9 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
         mSendJSONOnSneakingPlayers = getConfig().getBoolean("sendJSONOnSneakingPlayers");
         mSendJSONOnInvisiblePlayers = getConfig().getBoolean("sendJSONOnInvisiblePlayers");
         mSendJSONOnSpectators = getConfig().getBoolean("sendJSONOnSpectators");
+        mSendHealthInfo = getConfig().getBoolean("sendHealthInfo");
+        mSendFoodLevel = getConfig().getBoolean("sendFoodLevel");
+        mSendLevel = getConfig().getBoolean("sendLevel");
 
         if (getServer().getPluginManager().isPluginEnabled("VanishNoPacket")) {
             vnp = (VanishPlugin) getServer().getPluginManager().getPlugin("VanishNoPacket");
@@ -204,9 +210,15 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
             out.put("x", p.getLocation().getBlockX());
             out.put("y", p.getLocation().getBlockY());
             out.put("z", p.getLocation().getBlockZ());
-            out.put("health", p.getHealth());
-            out.put("foodlevel", p.getFoodLevel());
-            out.put("level", p.getLevel());
+            if (mSendHealthInfo) {
+                out.put("health", p.getHealth());
+            }
+            if (mSendFoodLevel) {
+                out.put("foodlevel", p.getFoodLevel());
+            }
+            if (mSendLevel) {
+                out.put("level", p.getLevel());
+            }
 
             // Handles sneaking player
             if (mHideSneakingPlayers) {

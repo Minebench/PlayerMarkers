@@ -9,4 +9,7 @@ sendJSONOnVanishedPlayers: false
 sendJSONOnSneakingPlayers: false
 sendJSONOnInvisiblePlayers: false
 sendJSONOnSpectators: false
+sendHealthInfo: true
+sendFoodLevel: true
+sendLevel: true
 offlineFile: locations.bin
