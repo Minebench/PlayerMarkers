@@ -217,7 +217,7 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
                         out.put("id", 6);
                     }
 
-                    sendDataSneaking = false;
+                    sendDataSneaking = mSendJSONOnSneakingPlayers;
                 }
             }
 
@@ -230,7 +230,7 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
                         out.put("id", 7); // will replace sneaking player ID
                     }
 
-                    sendDataInvisible = false;
+                    sendDataInvisible = mSendJSONOnInvisiblePlayers;
                 }
             }
 
@@ -248,16 +248,18 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
                     }
                 }
                 if (!sendDataVanished && mSendJSONOnVanishedPlayers) {
+                    sendDataVanished = true;
                     out.put("id", 5); // will replace invisible player ID
                 }
             }
 
             // Handles players in spectator mode
             if (mHideSpectators && p.getGameMode() == GameMode.SPECTATOR) {
-                sendDataSpectator = false;
                 if (mSendJSONOnSpectators) {
                     out.put("id", 8); // will replace spectator ID
                 }
+
+                sendDataSpectator = mSendJSONOnSpectators;
             }
 
             if (sendDataSneaking && sendDataInvisible && sendDataVanished && sendDataSpectator) {
