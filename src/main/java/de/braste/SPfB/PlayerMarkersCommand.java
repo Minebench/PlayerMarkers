@@ -61,16 +61,16 @@ public class PlayerMarkersCommand implements CommandExecutor {
                 String link = plugin.getMapUrlBase();
                 String world = plugin.getMappedWorld(target.getWorld().getName());
                 if (world != null) {
-                    String title = plugin.getConfig().getString("MapTitles." + target.getWorld().getName());
-                    if (title != null) {
+                    String renderer = plugin.getConfig().getString("MapRenderers." + target.getWorld().getName());
+                    if (renderer != null) {
                         Location loc = target.getLocation();
                         link = plugin.getMapUrlBase() + replace(plugin.getMapUrlFormat(),
                                 "x", String.valueOf(loc.getBlockX()),
                                 "y", String.valueOf(loc.getBlockY()),
                                 "z", String.valueOf(loc.getBlockZ()),
-                                "world", world,
-                                "title", title,
-                                "realWorld", loc.getWorld().getName(),
+                                "world", loc.getWorld().getName(),
+                                "title", world,
+                                "renderer", renderer,
                                 "environment", loc.getWorld().getEnvironment().name().toLowerCase(),
                                 "uuid", loc.getWorld().getUID().toString()
                         );
