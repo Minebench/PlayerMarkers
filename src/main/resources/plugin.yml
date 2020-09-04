@@ -6,3 +6,21 @@ website: http://braste.github.com/PlayerMarkers/
 dev-url: http://dev.bukkit.org/server-mods/mapmarkers/
 main: de.braste.SPfB.PlayerMarkers
 softdepend: [VanishNoPacket]
+commands:
+  playermarkers:
+    aliases: [map, marker, markers]
+    permission: playermarkers.command
+    usage: /<command> link [<player>]|reload
+permissions:
+  playermarkers.command:
+    default: true
+    description: Command permission
+  playermarkers.command.reload:
+    default: op
+    description: Config reload command permission
+  playermarkers.command.link:
+    default: true
+    description: Get link
+  playermarkers.command.link.others:
+    default: true
+    description: Get link
