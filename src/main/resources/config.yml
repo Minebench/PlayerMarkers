@@ -15,6 +15,6 @@ sendLevel: true
 offlineFile: locations.bin
 mapUrl:
   base: "https://www.minebench.de/map/"
-  format: "#/{x}/{y}/{z}/max/{title}/{renderers}"
-MapTitles:
+  format: "#/{x}/{y}/{z}/max/{title}/{renderer}"
+MapRenderers:
   world: World
