@@ -78,7 +78,7 @@ public class PlayerMarkersCommand implements CommandExecutor {
                 }
                 sender.spigot().sendMessage(new ComponentBuilder("Map Link: ").color(ChatColor.GREEN)
                         .append(link).color(ChatColor.YELLOW)
-                        .event(new ClickEvent(ClickEvent.Action.OPEN_URL, link))
+                        .event(new ClickEvent(ClickEvent.Action.OPEN_URL, link.replace(" ", "%20")))
                         .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(ChatColor.BLUE + "Click to open"))).create());
                 return true;
             }
