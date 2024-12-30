@@ -36,7 +36,6 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
     private static final String MappingSectionName = "Mapping";
 
     private JSONDataWriter mDataWriter = null;
-    private PluginDescriptionFile mPdfFile;
     private File mOfflineLocationsFile = null;
     private Map<String, String> mMapNameMapping = new HashMap<>();
     private ConcurrentHashMap<String, SimpleLocation> mOfflineLocations = new ConcurrentHashMap<>();;
@@ -58,7 +57,6 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
     private VanishPlugin vnp = null;
 
     public void onEnable() {
-        mPdfFile = this.getDescription();
         loadConfig();
 
         getCommand("playermarkers").setExecutor(new PlayerMarkersCommand(this));
@@ -75,20 +73,21 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
         // Convert interval from 1000 ms to game ticks (20 per second)
         updateInterval /= 50;
 
-        String targetFile = getConfig().getString("targetFile");
-        mDataWriter = new JSONDataWriter(targetFile);
-
         // Register update task
         getServer().getScheduler().scheduleSyncRepeatingTask(this, this, updateInterval, updateInterval);
 
 
         // Done initializing, tell the world
-        getLogger().info(String.format("%s version %s enabled", mPdfFile.getName(), mPdfFile.getVersion()));
+        getLogger().info(String.format("%s version %s enabled", getName(), getDescription().getVersion()));
     }
 
     public void loadConfig() {
         saveDefaultConfig();
         reloadConfig();
+
+        String targetFile = getConfig().getString("targetFile");
+        mDataWriter = new JSONDataWriter(targetFile);
+
         boolean oldSaveOffline = mSaveOfflinePlayers;
         mSaveOfflinePlayers = getConfig().getBoolean("saveOfflinePlayers");
         if (oldSaveOffline != mSaveOfflinePlayers) {
@@ -124,14 +123,13 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
 
     public void onDisable() {
         // Disable updates
-        BukkitScheduler schedule = getServer().getScheduler();
-        schedule.cancelTasks(getServer().getPluginManager().getPlugin("PlayerMarkers"));
+        getServer().getScheduler().cancelTasks(this);
 
         if (mSaveOfflinePlayers) {
             // Save the offline players map
             saveOfflinePlayersMap();
         }
-        getLogger().info(String.format("%s version %s disabled", mPdfFile.getName(), mPdfFile.getVersion()));
+        getLogger().info(String.format("%s version %s disabled", getName(), getDescription().getVersion()));
     }
 
     @EventHandler
@@ -157,7 +155,7 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
                 mMapNameMapping.put(entry.getKey(), (String) entry.getValue());
             }
         } else {
-            getLogger().warning(String.format("[%s] found no configured mapping, creating a default one.", mPdfFile.getName()));
+            getLogger().warning(String.format("[%s] found no configured mapping, creating a default one.", getName()));
         }
 
         // If there are new worlds in the server add them to the mapping
@@ -188,9 +186,9 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
                 mOfflineLocations = (ConcurrentHashMap<String, SimpleLocation>) in.readObject();
                 in.close();
             } catch (IOException e) {
-                getLogger().warning(String.format("%s: Couldn't open Locations file from %s!", mPdfFile.getName(), mOfflineLocationsFile.toString()));
+                getLogger().warning(String.format("%s: Couldn't open Locations file from %s!", getName(), mOfflineLocationsFile.toString()));
             } catch (ClassNotFoundException e) {
-                getLogger().warning(String.format("%s: Couldn't load Locations file from %s!", mPdfFile.getName(), mOfflineLocationsFile.toString()));
+                getLogger().warning(String.format("%s: Couldn't load Locations file from %s!", getName(), mOfflineLocationsFile.toString()));
             }
         }
     }
@@ -202,7 +200,7 @@ public class PlayerMarkers extends JavaPlugin implements Runnable, Listener {
                 out.writeObject(mOfflineLocations);
                 out.close();
             } catch (IOException e) {
-                getLogger().warning(String.format("%s: Couldn't write Locations file from %s! \n%s", mPdfFile.getName(), mOfflineLocationsFile.toString(), e.getMessage()));
+                getLogger().warning(String.format("%s: Couldn't write Locations file from %s! \n%s", getName(), mOfflineLocationsFile.toString(), e.getMessage()));
             }
         }
     }
