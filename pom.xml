@@ -26,7 +26,7 @@
         </repository>
         <repository>
             <id>minebench-repo</id>
-            <url>http://repo.minebench.de/content/groups/public/</url>
+            <url>https://repo.minebench.de/content/groups/public/</url>
         </repository>
     </repositories>
 
